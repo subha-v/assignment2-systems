@@ -1,0 +1,15 @@
+\begin{table}
+\caption{End-to-end benchmarking results (mean $\pm$ std over 10 steps, 5 warmup).}
+\label{tab:benchmarking}
+\begin{tabular}{lccc}
+\toprule
+Size & Forward (s) & Fwd+Bwd (s) & Fwd+Bwd+Opt (s) \\
+\midrule
+small & 0.0167 $\pm$ 0.0001 & 0.0489 $\pm$ 0.0001 & 0.0504 $\pm$ 0.0000 \\
+medium & 0.0476 $\pm$ 0.0000 & 0.1402 $\pm$ 0.0001 & 0.1456 $\pm$ 0.0000 \\
+large & 0.1066 $\pm$ 0.0000 & 0.3142 $\pm$ 0.0005 & 0.3275 $\pm$ 0.0000 \\
+xl & 0.2936 $\pm$ 0.0005 & 0.8654 $\pm$ 0.0008 & 0.9132 $\pm$ 0.0005 \\
+10B & 0.9467 $\pm$ 0.0005 & 2.8213 $\pm$ 0.0011 & OOM \\
+\bottomrule
+\end{tabular}
+\end{table}
