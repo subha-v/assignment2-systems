@@ -1,0 +1,15 @@
+\begin{table}
+\centering
+\begin{tabular}{lcccccccc}
+\toprule
+d\_model & 256 & 1024 & 4096 & 8192 & 16384 & 32768 & 65536 & 131072 \\
+\midrule
+16 & 20.8 & 82.3 & 1048.6 & 4129.0 & 16433.8 & OOM & OOM & OOM \\
+32 & 21.3 & 84.3 & 1056.6 & 4145.0 & 16465.8 & OOM & OOM & OOM \\
+64 & 22.3 & 88.3 & 1072.6 & 4177.0 & 16529.8 & OOM & OOM & OOM \\
+128 & 24.3 & 96.3 & 1104.6 & 4241.0 & 16657.8 & OOM & OOM & OOM \\
+\bottomrule
+\end{tabular}
+\caption{Memory in use before the backward pass (MiB), batch size 8.}
+\label{tab:attn_memory_mib}
+\end{table}

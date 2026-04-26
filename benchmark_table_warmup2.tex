@@ -1,0 +1,15 @@
+\begin{table}
+\caption{Benchmarking results with 2 warmup steps (mean $\pm$ std over 10 measurement steps).}
+\label{tab:benchmarking_warmup2}
+\begin{tabular}{lccc}
+\toprule
+Size & Forward (s) & Fwd+Bwd (s) & Fwd+Bwd+Opt (s) \\
+\midrule
+small & 0.0164 $\pm$ 0.0000 & 0.0484 $\pm$ 0.0000 & 0.0502 $\pm$ 0.0000 \\
+medium & 0.0471 $\pm$ 0.0001 & 0.1400 $\pm$ 0.0001 & 0.1453 $\pm$ 0.0000 \\
+large & 0.1063 $\pm$ 0.0000 & 0.3153 $\pm$ 0.0001 & 0.3279 $\pm$ 0.0001 \\
+xl & 0.2953 $\pm$ 0.0002 & 0.8669 $\pm$ 0.0003 & 0.9119 $\pm$ 0.0007 \\
+10B & 0.9466 $\pm$ 0.0006 & 2.8205 $\pm$ 0.0010 & OOM \\
+\bottomrule
+\end{tabular}
+\end{table}

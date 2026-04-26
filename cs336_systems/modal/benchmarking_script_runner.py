@@ -14,22 +14,22 @@ MODEL_CONFIGS = {
 }
 
 MODES = ["forward", "forward_backward", "full"]
+WARMUP_VALUES = [0, 1, 2, 5]
 VOCAB_SIZE = 10_000
 CONTEXT_LENGTH = 512
 BATCH_SIZE = 4
-NUM_WARMUP = 5
 NUM_STEPS = 10
 
 
 @app.function(image=build_image(), volumes=VOLUME_MOUNTS, gpu="B200", timeout=1800, max_containers=3)
-def run_benchmark(size_name: str, mode: str) -> dict:
+def run_benchmark(size_name: str, mode: str, num_warmup: int) -> dict:
     import timeit
     import torch
     from cs336_basics.model import BasicsTransformerLM
 
     cfg = MODEL_CONFIGS[size_name]
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"[{size_name} | {mode}] device={device}, gpu={torch.cuda.get_device_name(0)}")
+    print(f"[{size_name} | {mode} | warmup={num_warmup}] device={device}, gpu={torch.cuda.get_device_name(0)}")
 
     try:
         model = BasicsTransformerLM(
@@ -58,7 +58,7 @@ def run_benchmark(size_name: str, mode: str) -> dict:
                 lossOut.backward()
                 optimizer.step()
 
-        for _ in range(NUM_WARMUP):
+        for _ in range(num_warmup):
             step_fn()
             torch.cuda.synchronize()
 
@@ -75,28 +75,31 @@ def run_benchmark(size_name: str, mode: str) -> dict:
         sqDevs = [(t - meanTime) ** 2 for t in timings]
         stdTime = (sum(sqDevs) / len(timings)) ** 0.5
 
-        print(f"[{size_name} | {mode}] {meanTime:.4f} +/- {stdTime:.4f} s")
+        print(f"[{size_name} | {mode} | warmup={num_warmup}] {meanTime:.4f} +/- {stdTime:.4f} s")
         return {
-            "size": size_name, "mode": mode,
+            "size": size_name, "mode": mode, "warmup": num_warmup,
             "mean": meanTime, "std": stdTime,
             "times": timings, "status": "ok",
         }
 
     except torch.cuda.OutOfMemoryError:
-        print(f"[{size_name} | {mode}] OOM!")
-        return {"size": size_name, "mode": mode, "mean": None, "std": None, "times": [], "status": "OOM"}
+        print(f"[{size_name} | {mode} | warmup={num_warmup}] OOM!")
+        return {"size": size_name, "mode": mode, "warmup": num_warmup,
+                "mean": None, "std": None, "times": [], "status": "OOM"}
     except Exception as e:
-        print(f"[{size_name} | {mode}] error: {e}")
-        return {"size": size_name, "mode": mode, "mean": None, "std": None, "times": [], "status": f"error: {e}"}
+        print(f"[{size_name} | {mode} | warmup={num_warmup}] error: {e}")
+        return {"size": size_name, "mode": mode, "warmup": num_warmup,
+                "mean": None, "std": None, "times": [], "status": f"error: {e}"}
 
 
-def build_latex_table(results):
+def build_latex_table(results, num_warmup):
     sizeOrder = list(MODEL_CONFIGS.keys())
     rows = []
     for sizeName in sizeOrder:
         row = {"Size": sizeName}
         for mode in MODES:
-            matching = [r for r in results if r["size"] == sizeName and r["mode"] == mode]
+            matching = [r for r in results
+                        if r["size"] == sizeName and r["mode"] == mode and r["warmup"] == num_warmup]
             if len(matching) == 0:
                 row[mode] = "N/A"
                 continue
@@ -115,27 +118,31 @@ def build_latex_table(results):
     })
 
     colFmt = "l" + "c" * (len(df.columns) - 1)
+    captionStr = f"Benchmarking results with {num_warmup} warmup steps (mean $\\pm$ std over 10 measurement steps)."
     latexStr = df.to_latex(
         index=False, escape=False, column_format=colFmt,
-        caption="End-to-end benchmarking results (mean $\\pm$ std over 10 steps, 5 warmup).",
-        label="tab:benchmarking",
+        caption=captionStr,
+        label=f"tab:benchmarking_warmup{num_warmup}",
     )
     return latexStr
 
 
 def print_summary(results):
     sizeOrder = list(MODEL_CONFIGS.keys())
-    sortedResults = sorted(results, key=lambda r: (sizeOrder.index(r["size"]), MODES.index(r["mode"])))
+    sortedResults = sorted(
+        results,
+        key=lambda r: (WARMUP_VALUES.index(r["warmup"]), sizeOrder.index(r["size"]), MODES.index(r["mode"])),
+    )
 
-    print("\n" + "=" * 90)
-    print(f"{'Size':<10} {'Mode':<20} {'Mean (s)':<15} {'Std (s)':<15} {'Status'}")
-    print("-" * 90)
+    print("\n" + "=" * 100)
+    print(f"{'Warmup':<10} {'Size':<10} {'Mode':<20} {'Mean (s)':<15} {'Std (s)':<15} {'Status'}")
+    print("-" * 100)
     for r in sortedResults:
         if r["status"] == "ok":
-            print(f"{r['size']:<10} {r['mode']:<20} {r['mean']:<15.4f} {r['std']:<15.4f} {r['status']}")
+            print(f"{r['warmup']:<10} {r['size']:<10} {r['mode']:<20} {r['mean']:<15.4f} {r['std']:<15.4f} {r['status']}")
         else:
-            print(f"{r['size']:<10} {r['mode']:<20} {'N/A':<15} {'N/A':<15} {r['status']}")
-    print("=" * 90)
+            print(f"{r['warmup']:<10} {r['size']:<10} {r['mode']:<20} {'N/A':<15} {'N/A':<15} {r['status']}")
+    print("=" * 100)
 
 
 @app.local_entrypoint()
@@ -143,7 +150,8 @@ def main():
     jobs = []
     for sizeName in MODEL_CONFIGS:
         for mode in MODES:
-            jobs.append((sizeName, mode))
+            for w in WARMUP_VALUES:
+                jobs.append((sizeName, mode, w))
 
     allResults = []
     for result in run_benchmark.starmap(jobs):
@@ -151,14 +159,19 @@ def main():
 
     print_summary(allResults)
 
-    latexTable = build_latex_table(allResults)
-    print("\nLaTeX Table:\n")
-    print(latexTable)
+    allTables = []
+    for w in WARMUP_VALUES:
+        tableStr = build_latex_table(allResults, w)
+        allTables.append((w, tableStr))
+        print(f"\nLaTeX Table (warmup={w}):\n")
+        print(tableStr)
 
-    with open("benchmark_results.json", "w") as f:
+    with open("benchmark_results_warmup_sweep.json", "w") as f:
         json.dump(allResults, f, indent=2)
 
-    with open("benchmark_table.tex", "w") as f:
-        f.write(latexTable)
+    for w, tableStr in allTables:
+        outPath = f"benchmark_table_warmup{w}.tex"
+        with open(outPath, "w") as f:
+            f.write(tableStr)
 
-    print("Saved benchmark_results.json and benchmark_table.tex")
+    print("Saved benchmark_results_warmup_sweep.json and per-warmup .tex files")

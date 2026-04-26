@@ -1,0 +1,15 @@
+\begin{table}
+\centering
+\begin{tabular}{lcccccccc}
+\toprule
+d\_model & 256 & 1024 & 4096 & 8192 & 16384 & 32768 & 65536 & 131072 \\
+\midrule
+16 & 0.072 & 0.148 & 1.714 & 6.939 & 26.376 & OOM & OOM & OOM \\
+32 & 0.072 & 0.154 & 1.792 & 7.278 & 27.873 & OOM & OOM & OOM \\
+64 & 0.072 & 0.173 & 2.109 & 8.500 & 32.915 & OOM & OOM & OOM \\
+128 & 0.071 & 0.210 & 2.653 & 10.781 & 41.439 & OOM & OOM & OOM \\
+\bottomrule
+\end{tabular}
+\caption{Forward pass time per call (ms), batch size 8.}
+\label{tab:attn_forward_ms}
+\end{table}

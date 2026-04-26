@@ -1,0 +1,20 @@
+[
+  {
+    "block_size": 1,
+    "peak_bytes": 68861282816,
+    "peak_gib": 64.13206720352173,
+    "status": "ok"
+  },
+  {
+    "block_size": 2,
+    "peak_bytes": 74866600960,
+    "peak_gib": 69.72495555877686,
+    "status": "ok"
+  },
+  {
+    "block_size": 4,
+    "peak_bytes": 87552363520,
+    "peak_gib": 81.5394926071167,
+    "status": "ok"
+  }
+]

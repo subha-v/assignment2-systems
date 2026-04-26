@@ -1,0 +1,15 @@
+\begin{table}
+\centering
+\begin{tabular}{lcccccccc}
+\toprule
+d\_model & 256 & 1024 & 4096 & 8192 & 16384 & 32768 & 65536 & 131072 \\
+\midrule
+16 & 0.235 & 0.366 & 3.799 & 14.663 & 56.466 & OOM & OOM & OOM \\
+32 & 0.232 & 0.373 & 3.885 & 14.996 & 58.032 & OOM & OOM & OOM \\
+64 & 0.234 & 0.401 & 4.481 & 17.210 & 67.936 & OOM & OOM & OOM \\
+128 & 0.173 & 0.460 & 5.575 & 22.033 & 84.469 & OOM & OOM & OOM \\
+\bottomrule
+\end{tabular}
+\caption{Backward pass time per call (ms), batch size 8.}
+\label{tab:attn_backward_ms}
+\end{table}
