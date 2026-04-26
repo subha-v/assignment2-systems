@@ -29,6 +29,8 @@ def build_image(*, include_tests: bool = False) -> modal.Image:
       "tqdm>=4.67",                                                   
       "psutil>=7",                                       
       "pandas>=2",                                                    
+      "pytest",
+      "pytest-timeout",
   )                                                     
           .add_local_python_source("cs336_basics", "cs336_systems")
       )

@@ -1,5 +1,3 @@
-## PROBLEM pytorch_attention
-
 import argparse
 import timeit
 import torch
@@ -14,7 +12,7 @@ WARMUP_ITERS = 5
 TIMED_ITERS = 100
 
 
-def time_one_config(d_model, seq_len):
+def time_one_config(d_model, seq_len, use_compile=False):
     device = torch.device("cuda")
 
     try:
@@ -22,8 +20,13 @@ def time_one_config(d_model, seq_len):
         K = torch.randn(BATCH_SIZE, seq_len, d_model, device=device, requires_grad=True)
         V = torch.randn(BATCH_SIZE, seq_len, d_model, device=device, requires_grad=True)
 
+        if use_compile is True:
+            attentionFn = torch.compile(scaled_dot_product_attention)
+        else:
+            attentionFn = scaled_dot_product_attention
+
         for i in range(WARMUP_ITERS):
-            out = scaled_dot_product_attention(Q, K, V)
+            out = attentionFn(Q, K, V)
             loss = out.sum()
             loss.backward()
             Q.grad = None
@@ -35,20 +38,20 @@ def time_one_config(d_model, seq_len):
         for i in range(TIMED_ITERS):
             torch.cuda.synchronize()
             t0 = timeit.default_timer()
-            out = scaled_dot_product_attention(Q, K, V)
+            out = attentionFn(Q, K, V)
             torch.cuda.synchronize()
             t1 = timeit.default_timer()
             forwardTotal = forwardTotal + (t1 - t0)
         forwardMs = (forwardTotal / TIMED_ITERS) * 1000
 
-        out = scaled_dot_product_attention(Q, K, V)
+        out = attentionFn(Q, K, V)
         torch.cuda.synchronize()
         memBytes = torch.cuda.memory_allocated()
         memMib = memBytes / (1024 * 1024)
 
         backwardTotal = 0.0
         for i in range(TIMED_ITERS):
-            out = scaled_dot_product_attention(Q, K, V)
+            out = attentionFn(Q, K, V)
             loss = out.sum()
             torch.cuda.synchronize()
             t0 = timeit.default_timer()
@@ -64,6 +67,7 @@ def time_one_config(d_model, seq_len):
         result = {}
         result["d_model"] = d_model
         result["seq_len"] = seq_len
+        result["use_compile"] = use_compile
         result["forward_ms"] = forwardMs
         result["backward_ms"] = backwardMs
         result["memory_before_backward_mib"] = memMib
@@ -75,6 +79,7 @@ def time_one_config(d_model, seq_len):
         result = {}
         result["d_model"] = d_model
         result["seq_len"] = seq_len
+        result["use_compile"] = use_compile
         result["forward_ms"] = None
         result["backward_ms"] = None
         result["memory_before_backward_mib"] = None
@@ -85,24 +90,25 @@ def time_one_config(d_model, seq_len):
 parser = argparse.ArgumentParser()
 parser.add_argument("--d-model", type=int, default=None)
 parser.add_argument("--seq-len", type=int, default=None)
+parser.add_argument("--compile", action="store_true")
 
 
 def main():
     args = parser.parse_args()
     print(f"running on {torch.cuda.get_device_name(0)}")
-    print(f"batch_size={BATCH_SIZE}, warmup={WARMUP_ITERS}, timed iters={TIMED_ITERS}")
+    print(f"batch_size={BATCH_SIZE}, warmup={WARMUP_ITERS}, timed iters={TIMED_ITERS}, compile={args.compile}")
 
     results = []
 
     if args.d_model is not None and args.seq_len is not None:
         print(f"running d_model={args.d_model}, seq_len={args.seq_len}")
-        r = time_one_config(args.d_model, args.seq_len)
+        r = time_one_config(args.d_model, args.seq_len, use_compile=args.compile)
         results.append(r)
     else:
         for d in D_MODEL_VALUES:
             for s in SEQ_LEN_VALUES:
                 print(f"running d_model={d}, seq_len={s}")
-                r = time_one_config(d, s)
+                r = time_one_config(d, s, use_compile=args.compile)
                 results.append(r)
                 if r["status"] == "ok":
                     print(f"forward: {r['forward_ms']:.3f} ms, backward: {r['backward_ms']:.3f} ms, mem before bwd: {r['memory_before_backward_mib']:.1f} MiB")
@@ -113,11 +119,10 @@ def main():
     print("results:")
     for r in results:
         if r["status"] == "ok":
-            print(f"d_model={r['d_model']} seq_len={r['seq_len']}: forward={r['forward_ms']:.3f} ms, backward={r['backward_ms']:.3f} ms, mem={r['memory_before_backward_mib']:.1f} MiB")
+            print(f"d_model={r['d_model']} seq_len={r['seq_len']} compile={r['use_compile']}: forward={r['forward_ms']:.3f} ms, backward={r['backward_ms']:.3f} ms, mem={r['memory_before_backward_mib']:.1f} MiB")
         else:
-            print(f"d_model={r['d_model']} seq_len={r['seq_len']}: {r['status']}")
+            print(f"d_model={r['d_model']} seq_len={r['seq_len']} compile={r['use_compile']}: {r['status']}")
 
 
 if __name__ == "__main__":
     main()
-

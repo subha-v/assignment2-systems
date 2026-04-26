@@ -2,257 +2,361 @@
   {
     "d_model": 16,
     "seq_len": 256,
-    "forward_ms": 0.07222447544336319,
-    "backward_ms": 0.23476105881854892,
+    "use_compile": false,
+    "forward_ms": 0.0719667598605156,
+    "backward_ms": 0.22995149833150208,
     "memory_before_backward_mib": 20.77392578125,
     "status": "ok"
   },
   {
     "d_model": 16,
     "seq_len": 1024,
-    "forward_ms": 0.14786048559471965,
-    "backward_ms": 0.36596925812773407,
+    "use_compile": false,
+    "forward_ms": 0.1494741311762482,
+    "backward_ms": 0.36903879255987704,
     "memory_before_backward_mib": 82.34423828125,
     "status": "ok"
   },
   {
     "d_model": 16,
     "seq_len": 4096,
-    "forward_ms": 1.714012362062931,
-    "backward_ms": 3.7992958817631006,
+    "use_compile": false,
+    "forward_ms": 1.741622913395986,
+    "backward_ms": 3.819664752809331,
     "memory_before_backward_mib": 1048.62548828125,
     "status": "ok"
   },
   {
     "d_model": 16,
     "seq_len": 8192,
-    "forward_ms": 6.939354535425082,
-    "backward_ms": 14.663025037152693,
+    "use_compile": false,
+    "forward_ms": 7.008907521376386,
+    "backward_ms": 14.771980843506753,
     "memory_before_backward_mib": 4129.00048828125,
     "status": "ok"
   },
   {
     "d_model": 16,
     "seq_len": 16384,
-    "forward_ms": 26.37599351000972,
-    "backward_ms": 56.465894910506904,
+    "use_compile": false,
+    "forward_ms": 26.65564120048657,
+    "backward_ms": 56.937969395658,
     "memory_before_backward_mib": 16433.75048828125,
     "status": "ok"
   },
   {
-    "d_model": 16,
-    "seq_len": 32768,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
-  },
-  {
-    "d_model": 16,
-    "seq_len": 65536,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
-  },
-  {
-    "d_model": 16,
-    "seq_len": 131072,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
-  },
-  {
     "d_model": 32,
     "seq_len": 256,
-    "forward_ms": 0.07180919172242284,
-    "backward_ms": 0.2323956589680165,
+    "use_compile": false,
+    "forward_ms": 0.07072559208609164,
+    "backward_ms": 0.22796800243668258,
     "memory_before_backward_mib": 21.27392578125,
     "status": "ok"
   },
   {
     "d_model": 32,
     "seq_len": 1024,
-    "forward_ms": 0.1541229267604649,
-    "backward_ms": 0.3732937260065228,
+    "use_compile": false,
+    "forward_ms": 0.15598876168951392,
+    "backward_ms": 0.3755624615587294,
     "memory_before_backward_mib": 84.34423828125,
     "status": "ok"
   },
   {
     "d_model": 32,
     "seq_len": 4096,
-    "forward_ms": 1.7919253022409976,
-    "backward_ms": 3.8849099702201784,
+    "use_compile": false,
+    "forward_ms": 1.8066512898076326,
+    "backward_ms": 3.906665155664086,
     "memory_before_backward_mib": 1056.62548828125,
     "status": "ok"
   },
   {
     "d_model": 32,
     "seq_len": 8192,
-    "forward_ms": 7.277650251053274,
-    "backward_ms": 14.996276965830475,
+    "use_compile": false,
+    "forward_ms": 7.346301407087594,
+    "backward_ms": 15.111801284365356,
     "memory_before_backward_mib": 4145.00048828125,
     "status": "ok"
   },
   {
     "d_model": 32,
     "seq_len": 16384,
-    "forward_ms": 27.87284253281541,
-    "backward_ms": 58.03179706330411,
+    "use_compile": false,
+    "forward_ms": 28.131525837816298,
+    "backward_ms": 58.440067352494225,
     "memory_before_backward_mib": 16465.75048828125,
     "status": "ok"
   },
   {
-    "d_model": 32,
-    "seq_len": 32768,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
-  },
-  {
-    "d_model": 32,
-    "seq_len": 65536,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
-  },
-  {
-    "d_model": 32,
-    "seq_len": 131072,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
-  },
-  {
     "d_model": 64,
     "seq_len": 256,
-    "forward_ms": 0.07169028045609593,
-    "backward_ms": 0.23438683827407658,
+    "use_compile": false,
+    "forward_ms": 0.06987165077589452,
+    "backward_ms": 0.23081384599208832,
     "memory_before_backward_mib": 22.27392578125,
     "status": "ok"
   },
   {
     "d_model": 64,
     "seq_len": 1024,
-    "forward_ms": 0.1730611314997077,
-    "backward_ms": 0.4010183201171458,
+    "use_compile": false,
+    "forward_ms": 0.17358353710733354,
+    "backward_ms": 0.4039696021936834,
     "memory_before_backward_mib": 88.34423828125,
     "status": "ok"
   },
   {
     "d_model": 64,
     "seq_len": 4096,
-    "forward_ms": 2.1089961053803563,
-    "backward_ms": 4.481160434661433,
+    "use_compile": false,
+    "forward_ms": 2.117707262514159,
+    "backward_ms": 4.488007397158071,
     "memory_before_backward_mib": 1072.62548828125,
     "status": "ok"
   },
   {
     "d_model": 64,
     "seq_len": 8192,
-    "forward_ms": 8.49978490266949,
-    "backward_ms": 17.210384245263413,
+    "use_compile": false,
+    "forward_ms": 8.559079301776364,
+    "backward_ms": 17.304357901448384,
     "memory_before_backward_mib": 4177.00048828125,
     "status": "ok"
   },
   {
     "d_model": 64,
     "seq_len": 16384,
-    "forward_ms": 32.91509231203236,
-    "backward_ms": 67.93625881779008,
+    "use_compile": false,
+    "forward_ms": 33.16330843837932,
+    "backward_ms": 68.3934008597862,
     "memory_before_backward_mib": 16529.75048828125,
     "status": "ok"
   },
   {
-    "d_model": 64,
-    "seq_len": 32768,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
-  },
-  {
-    "d_model": 64,
-    "seq_len": 65536,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
-  },
-  {
-    "d_model": 64,
-    "seq_len": 131072,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
-  },
-  {
     "d_model": 128,
     "seq_len": 256,
-    "forward_ms": 0.07088523590937257,
-    "backward_ms": 0.17301331739872694,
+    "use_compile": false,
+    "forward_ms": 0.0704759219661355,
+    "backward_ms": 0.22897844784893095,
     "memory_before_backward_mib": 24.27392578125,
     "status": "ok"
   },
   {
     "d_model": 128,
     "seq_len": 1024,
-    "forward_ms": 0.20973342820070684,
-    "backward_ms": 0.4596827644854784,
+    "use_compile": false,
+    "forward_ms": 0.20902499207295477,
+    "backward_ms": 0.4780087328981608,
     "memory_before_backward_mib": 96.34423828125,
     "status": "ok"
   },
   {
     "d_model": 128,
     "seq_len": 4096,
-    "forward_ms": 2.6531011844053864,
-    "backward_ms": 5.57452670764178,
+    "use_compile": false,
+    "forward_ms": 2.6642237324267626,
+    "backward_ms": 5.596261624014005,
     "memory_before_backward_mib": 1104.62548828125,
     "status": "ok"
   },
   {
     "d_model": 128,
     "seq_len": 8192,
-    "forward_ms": 10.780992464860901,
-    "backward_ms": 22.033276978181675,
+    "use_compile": false,
+    "forward_ms": 10.84491832763888,
+    "backward_ms": 22.151641389355063,
     "memory_before_backward_mib": 4241.00048828125,
     "status": "ok"
   },
   {
     "d_model": 128,
     "seq_len": 16384,
-    "forward_ms": 41.43890752457082,
-    "backward_ms": 84.46923187933862,
+    "use_compile": false,
+    "forward_ms": 41.71598010696471,
+    "backward_ms": 84.94126768782735,
     "memory_before_backward_mib": 16657.75048828125,
     "status": "ok"
   },
   {
-    "d_model": 128,
-    "seq_len": 32768,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
+    "d_model": 16,
+    "seq_len": 256,
+    "use_compile": true,
+    "forward_ms": 0.06652446929365396,
+    "backward_ms": 0.1575146906543523,
+    "memory_before_backward_mib": 20.78173828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 16,
+    "seq_len": 1024,
+    "use_compile": true,
+    "forward_ms": 0.11968309059739113,
+    "backward_ms": 0.23444348596967757,
+    "memory_before_backward_mib": 82.37548828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 16,
+    "seq_len": 4096,
+    "use_compile": true,
+    "forward_ms": 0.8810241881292313,
+    "backward_ms": 1.6761847934685647,
+    "memory_before_backward_mib": 1048.75048828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 16,
+    "seq_len": 8192,
+    "use_compile": true,
+    "forward_ms": 3.2970192085485905,
+    "backward_ms": 6.153643428115174,
+    "memory_before_backward_mib": 4129.25048828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 16,
+    "seq_len": 16384,
+    "use_compile": true,
+    "forward_ms": 13.32447198452428,
+    "backward_ms": 23.453851685626432,
+    "memory_before_backward_mib": 16434.25048828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 32,
+    "seq_len": 256,
+    "use_compile": true,
+    "forward_ms": 0.07849663612432778,
+    "backward_ms": 0.16697193728759885,
+    "memory_before_backward_mib": 21.28173828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 32,
+    "seq_len": 1024,
+    "use_compile": true,
+    "forward_ms": 0.1234592462424189,
+    "backward_ms": 0.2504175202921033,
+    "memory_before_backward_mib": 84.37548828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 32,
+    "seq_len": 4096,
+    "use_compile": true,
+    "forward_ms": 1.2070503958966583,
+    "backward_ms": 1.908877935493365,
+    "memory_before_backward_mib": 1056.75048828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 32,
+    "seq_len": 8192,
+    "use_compile": true,
+    "forward_ms": 5.183614718262106,
+    "backward_ms": 7.166556586744264,
+    "memory_before_backward_mib": 4145.25048828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 32,
+    "seq_len": 16384,
+    "use_compile": true,
+    "forward_ms": 15.64088401501067,
+    "backward_ms": 24.513524955837056,
+    "memory_before_backward_mib": 16466.25048828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 64,
+    "seq_len": 256,
+    "use_compile": true,
+    "forward_ms": 0.09266957989893854,
+    "backward_ms": 0.1663680630736053,
+    "memory_before_backward_mib": 22.28173828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 64,
+    "seq_len": 1024,
+    "use_compile": true,
+    "forward_ms": 0.23097262135706842,
+    "backward_ms": 0.32220458844676614,
+    "memory_before_backward_mib": 88.37548828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 64,
+    "seq_len": 4096,
+    "use_compile": true,
+    "forward_ms": 1.5567269350867718,
+    "backward_ms": 2.4280990194529295,
+    "memory_before_backward_mib": 1072.75048828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 64,
+    "seq_len": 8192,
+    "use_compile": true,
+    "forward_ms": 5.472737817326561,
+    "backward_ms": 8.7940713763237,
+    "memory_before_backward_mib": 4177.25048828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 64,
+    "seq_len": 16384,
+    "use_compile": true,
+    "forward_ms": 20.666516728233546,
+    "backward_ms": 34.4342808611691,
+    "memory_before_backward_mib": 16530.25048828125,
+    "status": "ok"
   },
   {
     "d_model": 128,
-    "seq_len": 65536,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
+    "seq_len": 256,
+    "use_compile": true,
+    "forward_ms": 0.08931231684982777,
+    "backward_ms": 0.16604948905296624,
+    "memory_before_backward_mib": 24.28173828125,
+    "status": "ok"
   },
   {
     "d_model": 128,
-    "seq_len": 131072,
-    "forward_ms": null,
-    "backward_ms": null,
-    "memory_before_backward_mib": null,
-    "status": "OOM"
+    "seq_len": 1024,
+    "use_compile": true,
+    "forward_ms": 0.2663913753349334,
+    "backward_ms": 0.39360037073493004,
+    "memory_before_backward_mib": 96.37548828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 128,
+    "seq_len": 4096,
+    "use_compile": true,
+    "forward_ms": 2.1034322981722653,
+    "backward_ms": 3.5261898080352694,
+    "memory_before_backward_mib": 1104.75048828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 128,
+    "seq_len": 8192,
+    "use_compile": true,
+    "forward_ms": 7.758022953057662,
+    "backward_ms": 13.626243800390512,
+    "memory_before_backward_mib": 4241.25048828125,
+    "status": "ok"
+  },
+  {
+    "d_model": 128,
+    "seq_len": 16384,
+    "use_compile": true,
+    "forward_ms": 29.218391900649294,
+    "backward_ms": 50.9572315774858,
+    "memory_before_backward_mib": 16658.25048828125,
+    "status": "ok"
   }
 ]

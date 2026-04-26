@@ -1,0 +1,242 @@
+[
+  {
+    "size": "small",
+    "mode": "forward",
+    "use_compile": false,
+    "mean": 0.016786053901887497,
+    "std": 6.914405717747665e-05,
+    "status": "ok"
+  },
+  {
+    "size": "small",
+    "mode": "forward_backward",
+    "use_compile": false,
+    "mean": 0.049027569219470025,
+    "std": 5.2425693384646575e-05,
+    "status": "ok"
+  },
+  {
+    "size": "small",
+    "mode": "full",
+    "use_compile": false,
+    "mean": 0.05061568989767693,
+    "std": 3.0358984672767226e-05,
+    "status": "ok"
+  },
+  {
+    "size": "medium",
+    "mode": "forward",
+    "use_compile": false,
+    "mean": 0.04758642469532788,
+    "std": 0.00018267441572466785,
+    "status": "ok"
+  },
+  {
+    "size": "medium",
+    "mode": "forward_backward",
+    "use_compile": false,
+    "mean": 0.14006618190906012,
+    "std": 2.9353527374257293e-05,
+    "status": "ok"
+  },
+  {
+    "size": "medium",
+    "mode": "full",
+    "use_compile": false,
+    "mean": 0.1458073311019689,
+    "std": 0.0001023365007161493,
+    "status": "ok"
+  },
+  {
+    "size": "large",
+    "mode": "forward",
+    "use_compile": false,
+    "mean": 0.10643042469164357,
+    "std": 4.780077540015029e-05,
+    "status": "ok"
+  },
+  {
+    "size": "large",
+    "mode": "forward_backward",
+    "use_compile": false,
+    "mean": 0.31444298700080253,
+    "std": 0.0001751138506583951,
+    "status": "ok"
+  },
+  {
+    "size": "large",
+    "mode": "full",
+    "use_compile": false,
+    "mean": 0.32639126901049165,
+    "std": 3.466396572585183e-05,
+    "status": "ok"
+  },
+  {
+    "size": "xl",
+    "mode": "forward",
+    "use_compile": false,
+    "mean": 0.29311240489478224,
+    "std": 0.0001553393772235027,
+    "status": "ok"
+  },
+  {
+    "size": "xl",
+    "mode": "forward_backward",
+    "use_compile": false,
+    "mean": 0.8631059989973437,
+    "std": 0.00045536735654879524,
+    "status": "ok"
+  },
+  {
+    "size": "xl",
+    "mode": "full",
+    "use_compile": false,
+    "mean": 0.9106713701155968,
+    "std": 0.00010683004286619705,
+    "status": "ok"
+  },
+  {
+    "size": "10B",
+    "mode": "forward",
+    "use_compile": false,
+    "mean": 0.9461223044083453,
+    "std": 0.0004831042422304383,
+    "status": "ok"
+  },
+  {
+    "size": "10B",
+    "mode": "forward_backward",
+    "use_compile": false,
+    "mean": 2.8119155414868144,
+    "std": 0.00033894781973565124,
+    "status": "ok"
+  },
+  {
+    "size": "10B",
+    "mode": "full",
+    "use_compile": false,
+    "mean": null,
+    "std": null,
+    "status": "OOM"
+  },
+  {
+    "size": "small",
+    "mode": "forward",
+    "use_compile": true,
+    "mean": 0.012530215899460018,
+    "std": 7.747618643533052e-06,
+    "status": "ok"
+  },
+  {
+    "size": "small",
+    "mode": "forward_backward",
+    "use_compile": true,
+    "mean": 0.03731870179472026,
+    "std": 5.620085779461913e-05,
+    "status": "ok"
+  },
+  {
+    "size": "small",
+    "mode": "full",
+    "use_compile": true,
+    "mean": 0.03890441459370777,
+    "std": 4.303233185083282e-05,
+    "status": "ok"
+  },
+  {
+    "size": "medium",
+    "mode": "forward",
+    "use_compile": true,
+    "mean": 0.03797679219278507,
+    "std": 2.3384867241104273e-05,
+    "status": "ok"
+  },
+  {
+    "size": "medium",
+    "mode": "forward_backward",
+    "use_compile": true,
+    "mean": 0.11205290429061279,
+    "std": 1.3131679963916622e-05,
+    "status": "ok"
+  },
+  {
+    "size": "medium",
+    "mode": "full",
+    "use_compile": true,
+    "mean": 0.11777311069890857,
+    "std": 1.544359049103325e-05,
+    "status": "ok"
+  },
+  {
+    "size": "large",
+    "mode": "forward",
+    "use_compile": true,
+    "mean": 0.08940274879569188,
+    "std": 2.544480406650308e-05,
+    "status": "ok"
+  },
+  {
+    "size": "large",
+    "mode": "forward_backward",
+    "use_compile": true,
+    "mean": 0.26345848742639644,
+    "std": 6.057774547310276e-05,
+    "status": "ok"
+  },
+  {
+    "size": "large",
+    "mode": "full",
+    "use_compile": true,
+    "mean": 0.27715220659738404,
+    "std": 0.0001360873426258395,
+    "status": "ok"
+  },
+  {
+    "size": "xl",
+    "mode": "forward",
+    "use_compile": true,
+    "mean": 0.2690869640966412,
+    "std": 5.893127527185233e-05,
+    "status": "ok"
+  },
+  {
+    "size": "xl",
+    "mode": "forward_backward",
+    "use_compile": true,
+    "mean": 0.7928159644943662,
+    "std": 0.0007866430488060377,
+    "status": "ok"
+  },
+  {
+    "size": "xl",
+    "mode": "full",
+    "use_compile": true,
+    "mean": 0.8393376887048362,
+    "std": 0.00011420287200655377,
+    "status": "ok"
+  },
+  {
+    "size": "10B",
+    "mode": "forward",
+    "use_compile": true,
+    "mean": 0.8978324555966537,
+    "std": 0.00022184005218828367,
+    "status": "ok"
+  },
+  {
+    "size": "10B",
+    "mode": "forward_backward",
+    "use_compile": true,
+    "mean": 2.6711520167184064,
+    "std": 0.00061276648101038,
+    "status": "ok"
+  },
+  {
+    "size": "10B",
+    "mode": "full",
+    "use_compile": true,
+    "mean": null,
+    "std": null,
+    "status": "OOM"
+  }
+]

@@ -1,0 +1,26 @@
+\begin{table}
+\centering
+\begin{tabular}{llrr}
+\toprule
+size & mode & vanilla (s) & compiled (s) \\
+\midrule
+small & forward & 0.0168 $\pm$ 0.0001 & 0.0125 $\pm$ 0.0000 \\
+small & forward_backward & 0.0490 $\pm$ 0.0001 & 0.0373 $\pm$ 0.0001 \\
+small & full & 0.0506 $\pm$ 0.0000 & 0.0389 $\pm$ 0.0000 \\
+medium & forward & 0.0476 $\pm$ 0.0002 & 0.0380 $\pm$ 0.0000 \\
+medium & forward_backward & 0.1401 $\pm$ 0.0000 & 0.1121 $\pm$ 0.0000 \\
+medium & full & 0.1458 $\pm$ 0.0001 & 0.1178 $\pm$ 0.0000 \\
+large & forward & 0.1064 $\pm$ 0.0000 & 0.0894 $\pm$ 0.0000 \\
+large & forward_backward & 0.3144 $\pm$ 0.0002 & 0.2635 $\pm$ 0.0001 \\
+large & full & 0.3264 $\pm$ 0.0000 & 0.2772 $\pm$ 0.0001 \\
+xl & forward & 0.2931 $\pm$ 0.0002 & 0.2691 $\pm$ 0.0001 \\
+xl & forward_backward & 0.8631 $\pm$ 0.0005 & 0.7928 $\pm$ 0.0008 \\
+xl & full & 0.9107 $\pm$ 0.0001 & 0.8393 $\pm$ 0.0001 \\
+10B & forward & 0.9461 $\pm$ 0.0005 & 0.8978 $\pm$ 0.0002 \\
+10B & forward_backward & 2.8119 $\pm$ 0.0003 & 2.6712 $\pm$ 0.0006 \\
+10B & full & OOM & OOM \\
+\bottomrule
+\end{tabular}
+\caption{Per-step time (mean $\pm$ std over 10 steps): vanilla Transformer vs torch.compile, ctx=512, batch=4.}
+\label{tab:transformer_compile_compare}
+\end{table}

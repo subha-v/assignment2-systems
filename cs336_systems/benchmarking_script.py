@@ -16,6 +16,7 @@ parser.add_argument("--batch-size", type=int, default=4)
 parser.add_argument("--mode", type=str, default="forward", choices=["forward", "forward_backward", "full"])
 parser.add_argument("--warmup", type=int, default=10)
 parser.add_argument("--steps", type=int, default=10)
+parser.add_argument("--compile", action="store_true")
 
 
 def create_model(args, device):
@@ -58,6 +59,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = create_model(args, device)
+
+    if args.compile is True:
+        print("compiling model with torch.compile")
+        model = torch.compile(model)
+
     x = create_data(args, device)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
