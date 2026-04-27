@@ -1,0 +1,42 @@
+[
+  {
+    "use_sharding": false,
+    "world_size": 2,
+    "num_params": 3406809600,
+    "num_owned_params_rank0": 3406809600,
+    "mem_after_init_bytes": 13762340864,
+    "peak_after_init_bytes": 13762340864,
+    "mem_before_step_bytes": 54867108352.0,
+    "mem_after_step_bytes": 54867108352.0,
+    "peak_before_step_bytes": 55959337984,
+    "peak_after_step_bytes": 68496116224,
+    "avg_step_ms": 565.609115222469,
+    "step_times_ms": [
+      565.7087001018226,
+      565.4523930279538,
+      565.6860599992797,
+      565.5176730360836,
+      565.6807499472052
+    ]
+  },
+  {
+    "use_sharding": true,
+    "world_size": 2,
+    "num_params": 3406809600,
+    "num_owned_params_rank0": 1729003520,
+    "mem_after_init_bytes": 13762340864,
+    "peak_after_init_bytes": 13762340864,
+    "mem_before_step_bytes": 41281081856.0,
+    "mem_after_step_bytes": 41281081856.0,
+    "peak_before_step_bytes": 42507463680,
+    "peak_after_step_bytes": 48197816832,
+    "avg_step_ms": 568.9043477876112,
+    "step_times_ms": [
+      568.9472930971533,
+      568.8865738920867,
+      569.0340519649908,
+      568.7510960269719,
+      568.9027239568532
+    ]
+  }
+]
