@@ -5,6 +5,8 @@ import triton
 import triton.language as tl
 import math
 
+from cs336_systems.flash_attention.flash_backward import FlashAttentionBackwardPytorch
+
 @triton.jit
 def flash_fwd_kernel(
     Q_ptr, K_ptr, V_ptr,
@@ -121,6 +123,28 @@ def flash_fwd_kernel(
     tl.store(L_block_ptr, l_i)
 
 
+def pick_tile_sizes(seq_len, d, dtype):                              
+      if dtype == torch.float32:
+          if d >= 128:    
+            q_tile = k_tile = 32                         
+          elif d >= 64:   
+            q_tile = k_tile = 64
+          else:           
+            q_tile = k_tile = 128                        
+      else:  # bf16 / fp16
+          if d >= 128:    
+            q_tile = k_tile = 64                         
+          elif d >= 64:   
+            q_tile = k_tile = 128                        
+          else:           
+            q_tile = k_tile = 128
+                                                                       
+      if q_tile > seq_len: 
+        q_tile = seq_len                            
+      if k_tile > seq_len: 
+        k_tile = seq_len
+      return q_tile, k_tile   
+
 class FlashAttentionTriton(torch.autograd.Function):
     @staticmethod
     def forward(ctx, Q, K, V, is_causal=False):
@@ -129,8 +153,7 @@ class FlashAttentionTriton(torch.autograd.Function):
 
         O = torch.empty_like(Q)
         L = torch.empty((batch_size, N_q), device=Q.device, dtype=torch.float32)
-        Q_TILE_SIZE = 128
-        K_TILE_SIZE = 128
+        Q_TILE_SIZE, K_TILE_SIZE = pick_tile_sizes(N_q, d, Q.dtype)
         scale = 1.0 / math.sqrt(d) 
         grid = (triton.cdiv(N_q, Q_TILE_SIZE), batch_size)
         flash_fwd_kernel[grid](Q, K, V, O, L,
@@ -141,7 +164,8 @@ class FlashAttentionTriton(torch.autograd.Function):
             L.stride(0), L.stride(1),
         N_QUERIES=N_q, N_KEYS=N_k, scale=scale, D=d,
         Q_TILE_SIZE=Q_TILE_SIZE, K_TILE_SIZE=K_TILE_SIZE,
-        is_causal=is_causal
+        is_causal=is_causal,
+        num_warps=4, num_stages=1,
         )
 
         ctx.save_for_backward(Q, K, V, O, L)
@@ -149,6 +173,9 @@ class FlashAttentionTriton(torch.autograd.Function):
         return O
 
 
+# pytorch backend lol
     @staticmethod
     def backward(ctx, dO):
-        raise NotImplementedError
+        Q, K, V, O, L = ctx.saved_tensors
+        dQ, dK, dV = FlashAttentionBackwardPytorch.apply(Q, K, V, O, dO, L)
+        return dQ, dK, dV, None

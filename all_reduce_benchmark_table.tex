@@ -1,0 +1,15 @@
+\begin{table}
+\centering
+\begin{tabular}{lrrr}
+\toprule
+size (MB) & world\_size = 2 & world\_size = 4 & world\_size = 6 \\
+\midrule
+1 & 0.053 & 0.060 & 0.121 \\
+10 & 0.081 & 0.351 & 0.118 \\
+100 & 0.260 & 0.324 & 0.337 \\
+1024 & 1.976 & 2.608 & 2.912 \\
+\bottomrule
+\end{tabular}
+\caption{All-reduce latency (ms) on B200 with NCCL, float32 tensors, averaged over ranks and 20 iterations after 5 warmup steps.}
+\label{tab:all_reduce_single_node}
+\end{table}
