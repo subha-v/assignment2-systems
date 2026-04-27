@@ -12,7 +12,7 @@ NUM_LAYERS = 32
 NUM_HEADS = 32
 
 WARMUP_ITERS = 5
-TIMED_ITERS = 10
+TIMED_ITERS = 30
 
 
 def worker(rank, world_size, flat_grads: bool, result_path):
