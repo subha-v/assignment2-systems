@@ -2,6 +2,12 @@ import torch
 import torch.distributed as dist
 import torch.nn as nn
 
+from cs336_basics.model import Embedding as CS336Embedding
+from cs336_basics.model import Linear as CS336Linear
+#types we acutally want to shard
+SHARDABLE_TYPES = (nn.Linear, nn.Embedding, CS336Linear, CS336Embedding)
+
+
 class FSDP(torch.nn.Module):
     def __init__(self, module: torch.nn.Module, compute_dtype: torch.dtype | None = None):
         super().__init__()
@@ -16,13 +22,14 @@ class FSDP(torch.nn.Module):
        # self.my_modules = {} WE DONT NEED THIS WE ARE OVERWRITING MODULE ITSELF
         with torch.no_grad():
             for name, mod in module.named_modules():
-                if isinstance(mod, (nn.Linear, nn.Embedding)):
+                if isinstance(mod, SHARDABLE_TYPES):
                     weight = mod.weight # this is the actual tensor
                     len_dim_0 = weight.shape[0]
                     size_per_rank = len_dim_0 // self.num_ranks 
                     start_idx = self.rank * size_per_rank
                     end_idx = start_idx + size_per_rank
-                    my_weight = weight[start_idx:end_idx, :]
+                    # the normal syntax is a view of the original full weight so without hte clone it messes it up
+                    my_weight = weight[start_idx:end_idx, :].detach().clone()
                     my_shard = nn.Parameter(my_weight)
                     mod.weight = my_shard # replacing the current module weight with my weight! 
                     mod.local_weight = my_shard
@@ -45,18 +52,19 @@ class FSDP(torch.nn.Module):
             mod.weight = nn.Parameter(mod.prefetch_tensor)
             mod.prefetch_handle = None
             mod.prefetch_tensor = None
+            mod.prefetch_input = None
         else: # Layer 0 or layer 1
             my_shard = mod.local_weight # everyone has a piece of this 
             dtype = self.compute_dtype if self.compute_dtype is not None else my_shard.dtype
             full_shape = (my_shard.shape[0] * self.num_ranks, my_shard.shape[1]) # multiplying it back
             rewritten_tensor = torch.empty(full_shape, device=my_shard.device, dtype=dtype)
-            shard_to_gather = my_shard.to(dtype)
+            shard_to_gather = my_shard.detach().to(dtype)
             dist.all_gather_into_tensor(rewritten_tensor, shard_to_gather)
             mod.weight = nn.Parameter(rewritten_tensor) # this is the tensor with all the shards so its the full layer
             
         def reduce_scatter_hook(full_grad):
             my_grad_shard = torch.empty_like(mod.local_weight, dtype = full_grad.dtype)
-            handle = dist.reduce_scatter_tensor(my_grad_shard, full_grad, async_op=True, op=dist.ReduceOP.AVG)
+            handle = dist.reduce_scatter_tensor(my_grad_shard, full_grad, async_op=True, op=dist.ReduceOp.AVG)
             self.gradient_handles.append((mod, handle, my_grad_shard))
             return torch.zeros_like(full_grad) 
  
@@ -78,10 +86,11 @@ class FSDP(torch.nn.Module):
             dtype = self.compute_dtype if self.compute_dtype is not None else next_shard.dtype
             full_shape = (next_shard.shape[0] * self.num_ranks, next_shard.shape[1]) # same logic
             rewritten_tensor = torch.empty(full_shape, device=next_shard.device, dtype=dtype) 
-            shard_to_gather = next_shard.to(dtype)
+            shard_to_gather = next_shard.detach().to(dtype)
             handle = dist.all_gather_into_tensor(rewritten_tensor, shard_to_gather, async_op=True)
             next_module.prefetch_handle = handle
             next_module.prefetch_tensor = rewritten_tensor
+            next_module.prefetch_input = shard_to_gather
        
 
     def forward(self, *inputs, **kwargs):

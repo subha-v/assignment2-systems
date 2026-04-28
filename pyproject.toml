@@ -1,6 +1,6 @@
 [project]
 name = "cs336-systems"
-version = "26.1.0"
+version = "26.1.1"
 description = "CS336 Assignment 2 - Systems"
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
@@ -17,7 +17,6 @@ dependencies = [
     "pandas>=2",
     "ty>=0.0.29",
     "ruff>=0.15.10",
-    "modal>=1.4.2",
 ]
 
 [build-system]

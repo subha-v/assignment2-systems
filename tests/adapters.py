@@ -13,6 +13,7 @@ from cs336_systems.ddp.ddp import DDP
 
 from cs336_systems.optimizer_sharding import OptimizerSharding
 
+import torch.distributed as dist
 
 from cs336_systems.fsdp import FSDP 
 def get_flashattention_autograd_function_pytorch() -> type:
@@ -125,7 +126,17 @@ def fsdp_gather_full_params(fsdp_model: torch.nn.Module) -> dict[str, torch.Tens
     Returns:
         State dictionary mapping parameter names to full (unsharded) tensors.
     """
-    return {name: param.data for name, param in fsdp_model.module.named_parameters()}
+    sharded_param_ids = {id(mod.local_weight) for mod in fsdp_model.fdsp_modules}
+    full_params = {}
+    for name, param in fsdp_model.module.named_parameters():
+        if id(param) not in sharded_param_ids:
+            full_params[name] = param.data
+            continue
+        full_shape = (param.shape[0] * fsdp_model.num_ranks, *param.shape[1:])
+        full = torch.empty(full_shape, device=param.device, dtype=param.dtype)
+        dist.all_gather_into_tensor(full, param.data.contiguous())
+        full_params[name] = full
+    return full_params
 
 
 def get_sharded_optimizer(params, optimizer_cls: type[torch.optim.Optimizer], **kwargs) -> torch.optim.Optimizer:
