@@ -5,7 +5,9 @@ import triton
 import triton.language as tl
 import math
 
+
 from cs336_systems.flash_attention.flash_backward import FlashAttentionBackwardPytorch
+
 
 @triton.jit
 def flash_fwd_kernel(
@@ -123,27 +125,28 @@ def flash_fwd_kernel(
     tl.store(L_block_ptr, l_i)
 
 
-def pick_tile_sizes(seq_len, d, dtype):                              
+def pick_tile_sizes(seq_len, d, dtype):
       if dtype == torch.float32:
-          if d >= 128:    
-            q_tile = k_tile = 32                         
-          elif d >= 64:   
+          if d >= 128:
+            q_tile = k_tile = 32
+          elif d >= 64:
             q_tile = k_tile = 64
-          else:           
-            q_tile = k_tile = 128                        
-      else:  # bf16 / fp16
-          if d >= 128:    
-            q_tile = k_tile = 64                         
-          elif d >= 64:   
-            q_tile = k_tile = 128                        
-          else:           
+          else:
             q_tile = k_tile = 128
-                                                                       
-      if q_tile > seq_len: 
-        q_tile = seq_len                            
-      if k_tile > seq_len: 
+      else:  # bf16 / fp16
+          if d >= 128:
+            q_tile = 128
+            k_tile = 64
+          elif d >= 64:
+            q_tile = k_tile = 128
+          else:
+            q_tile = k_tile = 128
+
+      if q_tile > seq_len:
+        q_tile = seq_len
+      if k_tile > seq_len:
         k_tile = seq_len
-      return q_tile, k_tile   
+      return q_tile, k_tile 
 
 class FlashAttentionTriton(torch.autograd.Function):
     @staticmethod
@@ -174,8 +177,10 @@ class FlashAttentionTriton(torch.autograd.Function):
 
 
 # pytorch backend lol
+# no more pytorch backend
     @staticmethod
     def backward(ctx, dO):
+        from cs336_systems.flash_attention.triton_flash_backward import FlashAttentionBackwardTriton
         Q, K, V, O, L = ctx.saved_tensors
-        dQ, dK, dV = FlashAttentionBackwardPytorch.apply(Q, K, V, O, dO, L)
+        dQ, dK, dV = FlashAttentionBackwardTriton.apply(Q, K, V, O, dO, L,  ctx.is_causal)
         return dQ, dK, dV, None
